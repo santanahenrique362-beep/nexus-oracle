@@ -1,8 +1,12 @@
 import { Module } from '@nestjs/common';
-import { MarketService } from './market.service';
+import { OracleController } from './oracle.controller';
+import { OracleService } from './oracle.service';
+import { PrismaModule } from './database/prisma.module';
+import { MarketModule } from './market/market.module';
 
 @Module({
-  providers: [MarketService],
-  exports: [MarketService],
+  imports: [PrismaModule, MarketModule],
+  controllers: [OracleController],
+  providers: [OracleService],
 })
-export class MarketModule {}
+export class AppModule {}
