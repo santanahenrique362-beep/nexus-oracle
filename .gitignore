@@ -1,0 +1,35 @@
+# Node & Pacotes
+node_modules/
+.pnpm-store/
+.npm
+.yarn/
+dist/
+build/
+.next/
+out/
+
+# Variáveis de Ambiente e Segredos (CRÍTICO)
+.env
+.env.*
+!.env.example
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+logs/
+*.log
+
+# Arquivos de Sistema & IDEs
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Prisma & Banco Local
+packages/database/prisma/dev.db
+packages/database/prisma/dev.db-journal
+
+# Testes & Cobertura
+coverage/
+.nyc_output/
