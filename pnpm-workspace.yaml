@@ -1,0 +1,5 @@
+packages:
+  # Aplicações (Frontend e Backend)
+  - 'apps/*'
+  # Pacotes e Motores Compartilhados
+  - 'packages/*'
