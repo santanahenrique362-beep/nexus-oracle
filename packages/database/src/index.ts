@@ -1,13 +1,14 @@
 import { PrismaClient } from '@prisma/client';
 
+export * from '@prisma/client';
+
+// Padrão Singleton para evitar múltiplas conexões em ambiente de desenvolvimento
 declare global {
   var prisma: PrismaClient | undefined;
 }
 
-export const db = globalThis.prisma || new PrismaClient();
+export const prisma = global.prisma || new PrismaClient();
 
 if (process.env.NODE_ENV !== 'production') {
-  globalThis.prisma = db;
+  global.prisma = prisma;
 }
-
-export * from '@prisma/client';
