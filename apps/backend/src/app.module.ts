@@ -1,13 +1,16 @@
 import { Module } from '@nestjs/common';
-import { OracleController } from './oracle.controller';
-import { OracleService } from './oracle.service';
-import { PrismaModule } from './database/prisma.module';
+import { ScheduleModule } from '@nestjs/schedule';
+import { DecisionModule } from './decision/decision.module';
 import { MarketModule } from './market/market.module';
-import { CacheModule } from './cache/cache.module';
 
 @Module({
-  imports: [PrismaModule, MarketModule, CacheModule],
-  controllers: [OracleController],
-  providers: [OracleService],
+  imports: [
+    // Registro global do orquestrador de tarefas assíncronas do NestJS
+    ScheduleModule.forRoot(),
+    
+    // Módulos internos do ecossistema Nexus Oracle
+    DecisionModule,
+    MarketModule,
+  ],
 })
 export class AppModule {}
