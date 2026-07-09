@@ -1,0 +1,8 @@
+import { Module } from '@nestjs/common';
+import { MarketIngestionWorker } from './market-ingestion.worker';
+
+@Module({
+  providers: [MarketIngestionWorker],
+  exports: [MarketIngestionWorker],
+})
+export class MarketModule {}
