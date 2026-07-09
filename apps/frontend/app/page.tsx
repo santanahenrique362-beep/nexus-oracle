@@ -1,46 +1,65 @@
-import React from 'react';
-import { OracleScoreCard } from '../components/OracleScoreCard';
-import { RiskCalculatorCard } from '../components/RiskCalculatorCard';
-import { AssetWatchlistTable } from '../components/AssetWatchlistTable';
+'use client';
 
-export default function HomePage() {
+import React, { useState } from 'react';
+import { CockpitHeader } from '../components/CockpitHeader';
+import { OracleScoreGauge } from '../components/OracleScoreGauge';
+import { DecisionBoard } from '../components/DecisionBoard';
+
+export default function Home() {
+  const [asset, setAsset] = useState('BTCUSDT');
+
+  // Estado simulação do Payload Oficial retornado pelo Decision Engine (Layer 5)
+  const [data] = useState({
+    asset: 'BTCUSDT',
+    oracleScore: 91,
+    confidence: 88,
+    shield: 'GREEN' as const,
+    marketState: 'TRENDING' as const,
+    trend: 92,
+    volume: 84,
+    momentum: 89,
+    liquidity: 94,
+    volatility: 41,
+    risk: 'LOW' as const,
+    strengths: [
+      'Volume e fluxo comprador consistente acima da média',
+      'Liquidez profunda no livro de ordens institucional',
+      'Estrutura de tendência compradora mantida em tempos gráficos maiores'
+    ],
+    warnings: [
+      'Taxa de Funding em níveis levemente elevados',
+      'Proximidade de zona de resistência psicológica em $100k'
+    ],
+    recommendation: 'Condições favoráveis para alocação com viés comprador. Manter stop sob a estrutura de suporte local.',
+  });
+
   return (
-    <main className="min-h-screen p-6 md:p-12 space-y-8 max-w-7xl mx-auto">
-      {/* Top Bar / Header */}
-      <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-border pb-6 gap-4">
-        <div>
-          <div className="inline-block px-3 py-1 mb-2 text-xs font-semibold tracking-wider text-oracle-blue uppercase bg-blue-950/50 rounded-full border border-blue-800/40">
-            Nexus Oracle System
-          </div>
-          <h1 className="text-3xl font-black tracking-tight text-white">
-            Terminal de Inteligência de Mercado
-          </h1>
-        </div>
-        <div className="flex items-center gap-3 text-xs font-medium">
-          <div className="px-3 py-1.5 rounded-lg bg-emerald-950/40 border border-emerald-500/30 text-emerald-400">
-            Oracle Shield: <span className="font-bold">OPERATIONAL</span>
-          </div>
-          <div className="px-3 py-1.5 rounded-lg bg-gray-900 border border-border text-gray-300">
-            Node: <span className="font-bold text-oracle-blue">ONLINE</span>
-          </div>
-        </div>
-      </header>
+    <main className="min-h-screen bg-[#090A0F] text-[#ECEFF1] flex flex-col font-mono selection:bg-[#00B0FF] selection:text-black">
+      {/* 1. Global Header */}
+      <CockpitHeader currentAsset={asset} onSearchAsset={(newAsset) => setAsset(newAsset)} />
 
-      {/* Grid de Cards Superiores */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <OracleScoreCard
-          symbol="BTCUSDT"
-          score={65}
-          confidence={85}
-          shieldStatus="SAFE"
-          rationale="Alinhamento de médias móveis (SMA20/50/200) altista confirmado com volume comprador acima da média."
-        />
-        <RiskCalculatorCard />
-      </div>
+      {/* 2. Cockpit Container */}
+      <div className="flex-1 p-6 max-w-[1600px] w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6">
+        {/* Coluna Esquerda: Gauge & Shield (4 Cols) */}
+        <div className="lg:col-span-4">
+          <OracleScoreGauge
+            score={data.oracleScore}
+            confidence={data.confidence}
+            shield={data.shield}
+            asset={asset}
+          />
+        </div>
 
-      {/* Tabela Inferior de Monitoramento */}
-      <div>
-        <AssetWatchlistTable />
+        {/* Coluna Direita: Decision Board (8 Cols) */}
+        <div className="lg:col-span-8">
+          <DecisionBoard
+            strengths={data.strengths}
+            warnings={data.warnings}
+            recommendation={data.recommendation}
+            marketState={data.marketState}
+            risk={data.risk}
+          />
+        </div>
       </div>
     </main>
   );
